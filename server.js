@@ -32,13 +32,13 @@ app.listen(port, () => {
 
 const addToItems = () => {
     // Прочитаем данные из файла data.json
-    const jsonData = fs.readFileSync('data.json', 'utf8');
+    const jsonData = fs.readFileSync('items.json', 'utf8');
     const data = JSON.parse(jsonData);
     console.log(data, 'json data')
-    data.allItems['armors'].push(222)
+    data['armor'].push(222)
     const updatedJsonData = JSON.stringify(data);
     // Запишем обновленные данные обратно в файл data.json
-    fs.writeFileSync('data.json', updatedJsonData);
+    fs.writeFileSync('items.json', updatedJsonData);
 
     console.log('Новые данные успешно добавлены в массив age');
 };
