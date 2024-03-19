@@ -1,4 +1,4 @@
-
+const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -19,3 +19,32 @@ app.get('/getData', (req, res) => {
 app.listen(port, () => {
     console.log(`Сервер запущен на порту ${port}`);
 });
+// const saveItems = () => {
+//     const data = {
+//         age: [30, 23, 23, 55]
+//     };
+//     const jsonData = JSON.stringify(data);
+//     fs.writeFileSync('data.json', jsonData);
+//     console.log('Данные успешно сохранены в файл data.json');
+// };
+
+// saveItems();
+
+const addToItems = () => {
+    // Прочитаем данные из файла data.json
+    const jsonData = fs.readFileSync('data.json', 'utf8');
+    const data = JSON.parse(jsonData);
+    console.log(data, 'json data')
+    data.allItems['armors'].push(222)
+    const updatedJsonData = JSON.stringify(data);
+    // Запишем обновленные данные обратно в файл data.json
+    fs.writeFileSync('data.json', updatedJsonData);
+
+    console.log('Новые данные успешно добавлены в массив age');
+};
+
+// Пример добавления новых данных в массив age
+addToItems();
+
+
+
