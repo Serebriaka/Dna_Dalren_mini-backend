@@ -21,7 +21,8 @@ app.post('/setItem', (req, res) => {
     res.send('Данные успешно сохранены');
 });
 app.delete('/delItem', (req, res) => {
-    delItems(req.body)
+    const { id, category } = req.query;
+    delItems(id, category)
     res.send('Данные успешно сохранены');
 });
 
@@ -47,13 +48,15 @@ const addToItems = (item) => {
 
     console.log(`Новые данные успешно добавлены в массив ${item.category}` );
 };
-const delItems = (obj) => {
+const delItems = (id, category) => {
     const jsonData = fs.readFileSync('items.json', 'utf8');
     const data = JSON.parse(jsonData)
-    let itemIndex = data['shields'].findIndex(item => item.id === "rQvqDvA9BuMW1Du")
+    let itemIndex = data[category].findIndex(item => item.id === id)
+    console.log(id, category)
     if(itemIndex !== -1) {
-        data['shields'].splice(itemIndex, 1)
+        data[category].splice(itemIndex, 1)
         const updatedJsonData = JSON.stringify(data);
+        console.log()
         fs.writeFileSync('items.json', updatedJsonData);
     }
 }
