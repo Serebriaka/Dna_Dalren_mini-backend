@@ -16,35 +16,49 @@ app.get('/getData', (req, res) => {
     // Получение данных
     res.send(data);
 });
+app.post('/setItem', (req, res) => {
+    addToItems(req.body)
+    res.send('Данные успешно сохранены');
+});
+app.delete('/delItem', (req, res) => {
+    delItems(req.body)
+    res.send('Данные успешно сохранены');
+});
+
+app.get('/getItems', (req, res) => {
+    // Получение данных
+    const jsonData = fs.readFileSync('items.json', 'utf8');
+    const data = JSON.parse(jsonData)
+    res.send(data);
+});
 app.listen(port, () => {
     console.log(`Сервер запущен на порту ${port}`);
 });
-// const saveItems = () => {
-//     const data = {
-//         age: [30, 23, 23, 55]
-//     };
-//     const jsonData = JSON.stringify(data);
-//     fs.writeFileSync('data.json', jsonData);
-//     console.log('Данные успешно сохранены в файл data.json');
-// };
 
-// saveItems();
-
-const addToItems = () => {
+const addToItems = (item) => {
     // Прочитаем данные из файла data.json
     const jsonData = fs.readFileSync('items.json', 'utf8');
-    const data = JSON.parse(jsonData);
-    console.log(data, 'json data')
-    data['armor'].push(222)
+    const data = JSON.parse(jsonData)
+
+    data[item.category].push(item)
     const updatedJsonData = JSON.stringify(data);
     // Запишем обновленные данные обратно в файл data.json
     fs.writeFileSync('items.json', updatedJsonData);
 
-    console.log('Новые данные успешно добавлены в массив age');
+    console.log(`Новые данные успешно добавлены в массив ${item.category}` );
 };
+const delItems = (obj) => {
+    const jsonData = fs.readFileSync('items.json', 'utf8');
+    const data = JSON.parse(jsonData)
+    let itemIndex = data['shields'].findIndex(item => item.id === "rQvqDvA9BuMW1Du")
+    if(itemIndex !== -1) {
+        data['shields'].splice(itemIndex, 1)
+        const updatedJsonData = JSON.stringify(data);
+        fs.writeFileSync('items.json', updatedJsonData);
+    }
+}
 
-// Пример добавления новых данных в массив age
-addToItems();
+
 
 
 
